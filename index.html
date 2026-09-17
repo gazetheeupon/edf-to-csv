@@ -116,6 +116,30 @@
     <p class="privacy" style="margin-top:.6rem;"><strong>Large files:</strong> a long, high-rate recording can produce a very large CSV. Narrow the time range first if you only need part of the recording.</p>
   </div>
 
+
+  <div class="card faq">
+    <h2>Troubleshooting</h2>
+    <details><summary>The export button stays disabled after I select channels</summary>
+      <p>Channels selected together for one CSV export must share the same sample rate. EDF/BDF recordings often mix a fast signal (like EEG at 256&nbsp;Hz) with a slow one (like a temperature channel at 1&nbsp;Hz) &mdash; select channels with matching rates, or export each group separately.</p>
+    </details>
+    <details><summary>Excel won't open my exported CSV cleanly, or it takes forever</summary>
+      <p>A long, high-sample-rate recording can produce a CSV with more rows than a spreadsheet can comfortably handle (Excel's own row limit is 1,048,576). Narrow the time range before exporting if you only need part of the recording.</p>
+    </details>
+  </div>
+
+  <div class="card cli">
+    <h2>Prefer the command line?</h2>
+    <div class="cli-block">pip install pyedflib
+python -c "
+import pyedflib, numpy as np
+f = pyedflib.EdfReader('file.edf')
+data = np.array([f.readSignal(i) for i in range(f.signals_in_file)])
+np.savetxt('out.csv', data.T, delimiter=',')
+"</div>
+    <p class="privacy"><code>pyedflib</code> and <code>mne</code> are the two most common Python libraries for reading EDF/BDF files.</p>
+  </div>
+
+
   <div id="ad-slot"></div>
 </main>
 <script type="module" src="app.js"></script>
